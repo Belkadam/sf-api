@@ -5,7 +5,14 @@ meta {
 }
 
 post {
-  url: {{url}}/login
-  body: none
+  url: {{public_url}}/login
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "email": "{{email_user}}",
+    "password": "{{password_user}}"
+  }
 }
