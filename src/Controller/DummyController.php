@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('api/test')]
 class DummyController extends AbstractApiController
 {
-    #[Route('/', name: 'test', methods: ['GET'])]
+    #[Route('', name: 'test', methods: ['GET'])]
     public function getTest(Request $request): Response
     {
         return new JsonResponse($this->getJsonResponse('Hello', ['Foo' => 'bar']), Response::HTTP_OK);
