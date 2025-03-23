@@ -16,3 +16,4 @@
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 /bruno/environments/PROD.bru
+/bruno/environments/local.bru
