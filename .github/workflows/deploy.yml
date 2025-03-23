@@ -1,0 +1,48 @@
+name: CI/CD for Symfony App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          USER_GIT: ${{ secrets.USER_GIT }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+
+      - name: Deploy using SSH
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          USER_GIT: ${{ secrets.USER_GIT }}
+        run: |
+          ssh $USER_GIT@$SERVER_IP <<EOF
+            cd /srv/docker/nexus/sf-api
+
+            git pull origin main
+
+            composer install --no-dev --optimize-autoloader
+
+            php bin/console doctrine:migrations:migrate --no-interaction
+
+            php bin/console cache:clear --env=PRD
+            php bin/console cache:warmup --env=PRD
+
+            cd ../nexus-stack-docker
+            docker-compose stop sf_api
+            docker-compose build sf_api
+            docker-compose up -d sf_api
+          EOF
