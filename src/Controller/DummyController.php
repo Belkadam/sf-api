@@ -19,6 +19,6 @@ class DummyController extends AbstractApiController
     #[Route('/ci-cd', name: 'test_ci_cd', methods: ['GET'])]
     public function testCiCd()
     {
-        return new JsonResponse($this->getJsonResponse('CI/CD worked', ['Foo' => 'bar']), Response::HTTP_OK);
+        return new JsonResponse($this->getJsonResponse('CI/CD worked 2', ['Foo' => 'bar']), Response::HTTP_OK);
     }
 }
