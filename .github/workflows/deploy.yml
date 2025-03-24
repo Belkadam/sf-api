@@ -30,11 +30,13 @@ jobs:
           USER_GIT: ${{ secrets.USER_GIT }}
         run: |
           ssh $USER_GIT@$SERVER_IP <<EOF
-            cd /srv/docker/nexus/nexus-stack-docker
-            
-            docker-compose exec sf_api sh
+            cd /srv/docker/nexus/sf-api
 
             git pull origin main
+          
+            cd ../nexus-stack-docker
+          
+            docker-compose exec sf_api sh
 
             composer install --no-dev --optimize-autoloader
 
