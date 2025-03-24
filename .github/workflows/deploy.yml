@@ -37,11 +37,10 @@ jobs:
             composer install --no-dev --optimize-autoloader
 
             cd ../nexus-stack-docker
-            docker-compose exec sf_api sh
           
-            php bin/console doctrine:migrations:migrate --no-interaction
-            php bin/console cache:clear --env=PRD
-            php bin/console cache:warmup --env=PRD
+            docker-compose exec -T sf_api php bin/console doctrine:migrations:migrate --no-interaction
+            docker-compose exec -T sf_api php bin/console cache:clear --env=PRD
+            docker-compose exec -T sf_api php bin/console cache:warmup --env=PRD
 
             docker-compose stop sf_api
             docker-compose build sf_api
