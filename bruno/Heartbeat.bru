@@ -1,0 +1,18 @@
+meta {
+  name: Heartbeat
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{public_url}}/heartbeat
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{email_user}}",
+    "password": "{{password_user}}"
+  }
+}
