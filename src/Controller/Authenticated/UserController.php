@@ -17,6 +17,10 @@ class UserController extends AbstractApiController
 
     }
 
+
+    /**
+     * Get all users
+     */
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(): JsonResponse
     {
@@ -26,6 +30,6 @@ class UserController extends AbstractApiController
             $usersDto[] = new UserDto($user);
         }
 
-        return new JsonResponse($this->getJsonResponse($usersDto), Response::HTTP_OK);
+        return new JsonResponse($this->getJsonResponse($usersDto, 'all users'), Response::HTTP_OK);
     }
 }

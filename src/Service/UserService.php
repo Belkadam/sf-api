@@ -12,6 +12,8 @@ class UserService extends AbstractService
     }
 
     /**
+     * Get all users
+     *
      * @return array<int, User>
      */
     public function index(): array
