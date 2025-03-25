@@ -1,3 +1,3 @@
 #!/bin/bash
 cd ../nexus-stack-docker
-docker compose exec sf_api bin/console "$@"
+docker-compose exec -it sf_api bin/console "$@"
