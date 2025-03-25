@@ -14,37 +14,35 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class LoginController extends AbstractApiController
 {
-    private $jwtManager;
-    private $entityManager;
-
+    private JWTTokenManagerInterface $jwtManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(JWTTokenManagerInterface $jwtManager, EntityManagerInterface $entityManager)
     {
         $this->jwtManager = $jwtManager;
         $this->entityManager = $entityManager;
-
     }
 
+    /**
+     * Handles user login.
+     */
     #[Route('/login', name: 'login', methods: ['POST'])]
     public function login(Request $request,  UserPasswordHasherInterface $passwordHasher): Response
     {
-        // Récupérer les données du POST (email et mot de passe)
         $data = json_decode($request->getContent(), true);
         $email = $data['email'] ?? '';
         $password = $data['password'] ?? '';
 
         if (empty($email) || empty($password)) {
-            return new JsonResponse(['message' => 'Email et mot de passe requis'], 400);
+            return new JsonResponse(['message' => 'Password required.'], 400);
         }
 
         try {
-            // Rechercher l'utilisateur par email avec le gestionnaire d'entités
             $user = $this->entityManager->getRepository(User::class)->findOneByEmail($email);
             if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
-                return new JsonResponse(['message' => 'Email ou mot de passe invalide'], 401);
+                return new JsonResponse(['message' => 'Invalid credentials.'], 401);
             }
 
-            // Générer un token JWT pour l'utilisateur authentifié
             $jwt = $this->generateJwt($user);
 
             return new JsonResponse(['message' => 'Authentication successful', 'token' => $jwt]);
