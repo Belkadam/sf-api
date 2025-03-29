@@ -45,7 +45,16 @@ class LoginController extends AbstractApiController
 
             $jwt = $this->generateJwt($user);
 
-            return new JsonResponse(['message' => 'Authentication successful', 'token' => $jwt]);
+            return new JsonResponse([
+                'userAbilityRules'  => [
+                    'action'    => 'read',
+                    'subject'   => 'admin',
+                ],
+                'userDate'          => [
+                    'message' => 'Authentication successful'
+                ],
+                'accessToken'       => $jwt,
+            ]);
 
         } catch (\Exception $e) {
             return new JsonResponse(['message' => 'Authentication failed'], 401);
