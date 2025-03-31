@@ -50,7 +50,7 @@ class LoginController extends AbstractApiController
                     'action'    => 'read',
                     'subject'   => 'admin',
                 ],
-                'userDate'          => [
+                'userData'          => [
                     'message' => 'Authentication successful'
                 ],
                 'accessToken'       => $jwt,
