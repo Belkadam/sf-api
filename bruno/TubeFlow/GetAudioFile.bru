@@ -1,0 +1,19 @@
+meta {
+  name: GetAudioFile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/tube-flow/audio-file/dQw4w9WgXcQ
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{jwt_token}}
+}
+
+settings {
+  encodeUrl: true
+}
